@@ -21,10 +21,18 @@ public class Dsw2025TpiContext: DbContext
             eb.Property(p => p.CurrentUnitPrice).HasPrecision(15, 2);
         });
         modelBuilder.Entity<Order>(eb => {
+            eb.ToTable("Orders");
             eb.Property(p => p.TotalAmount).HasPrecision(15, 2);
             eb.Property(p => p.ShippingAddress).HasMaxLength(60);
             eb.Property(p => p.BillingCity).HasMaxLength(60);
             eb.Property(p => p.Notes).HasMaxLength(60);
+        });
+        modelBuilder.Entity<Customer>(eb => {
+            eb.ToTable("Customers");
+        });
+        modelBuilder.Entity<OrderItem>(eb => {
+            eb.ToTable("OrderItems");
+            eb.Property(p => p.UnitPrice).HasPrecision(15, 2);
         });
     }
 }

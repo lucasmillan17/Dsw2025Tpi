@@ -14,6 +14,7 @@ namespace Dsw2025Tpi.Domain.Entities
         public string? Notes { get; set; }
         public decimal TotalAmount { get; private set; }
         public OrderItem OrderItems { get; set; }
+        public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
 
     }
