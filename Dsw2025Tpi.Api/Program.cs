@@ -1,4 +1,5 @@
-
+using Microsoft.EntityFrameworkCore;
+using Dsw2025Tpi.Data;
 namespace Dsw2025Tpi.Api;
 
 public class Program
@@ -12,6 +13,9 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddDbContext<Dsw2025TpiContext>(options => {
+            options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Dsw2025Db;Integrated Security=True;");
+        });
         builder.Services.AddSwaggerGen();
         builder.Services.AddHealthChecks();
 
