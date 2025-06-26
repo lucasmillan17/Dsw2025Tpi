@@ -43,5 +43,11 @@ namespace Dsw2025Tpi.Application.Services
         {
             return GetAllProductsAsync();
         }
+       
+
+        public Task<Product> Update(Guid id, ProductModel.Request request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

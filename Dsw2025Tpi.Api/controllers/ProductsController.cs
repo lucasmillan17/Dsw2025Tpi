@@ -35,7 +35,7 @@ namespace Dsw2025Tpi.Api.Controllers
             }
             return Ok(product);
         }
-        
+
         public async Task<IActionResult> GetAllProductsAsync()
         {
             var products = await _productService.GetAllProductsAsync();
@@ -45,5 +45,6 @@ namespace Dsw2025Tpi.Api.Controllers
             }
             return Ok(products);
         }
+       
     }
 }

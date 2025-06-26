@@ -13,6 +13,7 @@ namespace Dsw2025Tpi.Application.Services
         Task<Product> CreateProductAsync(ProductModel.Request request);
         Task<Product> GetProductByIdAsync(Guid id);
         Task<IEnumerable<Product>> GetAllProductsAsync();
-            
+        Task<Product> Update(Guid id, ProductModel.Request request);
+        
     }
 }
