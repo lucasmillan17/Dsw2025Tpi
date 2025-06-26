@@ -8,6 +8,7 @@ namespace Dsw2025Tpi.Domain.Entities
 {
     public class Product : EntityBase
     {
+        public Guid Id { get; set; }
         public string Sku { get; set; }
         public string InternalCode { get; set; }
         public string Name { get; set; }

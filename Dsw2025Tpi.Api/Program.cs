@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Dsw2025Tpi.Data;
+using Dsw2025Tpi.Application.Services;
+using Dsw2025Tpi.Data.Repositories;
+using Dsw2025Tpi.Domain.Interfaces;
 namespace Dsw2025Tpi.Api;
 
 public class Program
@@ -9,6 +12,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddScoped<IProductService, ProductService>();
+        builder.Services.AddScoped<IRepository, EfRepository>();
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
