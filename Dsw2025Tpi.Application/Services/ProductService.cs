@@ -34,5 +34,14 @@ namespace Dsw2025Tpi.Application.Services
         {
             return await _repository.GetById<Product>(id);
         }
+        async Task<IEnumerable<Product>> GetAllProductsAsync()
+        {
+            return await _repository.GetAll<Product>();
+        }
+
+        Task<IEnumerable<Product>> IProductService.GetAllProductsAsync()
+        {
+            return GetAllProductsAsync();
+        }
     }
 }
