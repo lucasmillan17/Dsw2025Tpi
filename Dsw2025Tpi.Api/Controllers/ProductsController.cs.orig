@@ -16,7 +16,7 @@ namespace Dsw2025Tpi.Api.Controllers
             _productService = productService;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductModelRequest request)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductModel.Request request)
         {
             if (!ModelState.IsValid)
             {
@@ -54,6 +54,9 @@ namespace Dsw2025Tpi.Api.Controllers
             }
             return Ok(products);
         }
+<<<<<<< HEAD
+       
+=======
         [HttpPatch("{id}")]
         public async Task<IActionResult> DisableProductById(Guid id)
         {
@@ -69,7 +72,7 @@ namespace Dsw2025Tpi.Api.Controllers
             }
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(Guid id,[FromBody] ProductModelRequest request)
+        public async Task<IActionResult> UpdateProduct(Guid id,[FromBody] ProductModel.Request request)
         {
             try
             {
@@ -85,5 +88,6 @@ namespace Dsw2025Tpi.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+>>>>>>> 3e427b7da0f40106703afb696331a7e9ffce2eb5
     }
 }
