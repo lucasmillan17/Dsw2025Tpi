@@ -68,5 +68,22 @@ namespace Dsw2025Tpi.Api.Controllers
                 return NotFound();
             }
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(Guid id,[FromBody] ProductModel.Request request)
+        {
+            try
+            {
+                var updatedProduct = await _productService.UpdateProductsAsync(id, request);
+                return Ok(updatedProduct);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (DuplicatedItemException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
