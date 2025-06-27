@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dsw2025Tpi.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace Dsw2025Tpi.Domain.Entities
             foreach (var item in _orderItems) { 
                 OrderItems.Add(item);    
             }
+            Status = OrderStatus.PENDING;
         }
         public DateTime Date { get; set; }
         public string ShippingAddress { get; set; }
@@ -27,6 +29,6 @@ namespace Dsw2025Tpi.Domain.Entities
         public Customer Customer { get; set; }
         //Sumamos los subtotales de los items para obtener el total de la orden
         public decimal? TotalAmount => OrderItems.Sum(item => item.Subtotal);
-
+        public OrderStatus Status { get; set; }
     }
 }

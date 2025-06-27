@@ -29,7 +29,12 @@ namespace Dsw2025Tpi.Application.Dtos
             );
         public record Response(
             Guid OrderId,
-            decimal TotalAmount
+            decimal? TotalAmount,
+            Guid CustomerId,
+            string? ShippingAddress,
+            string? BillingAddress,
+            string? Notes,
+            OrderItemModel.Request[] OrderItems
             );
     }
 }

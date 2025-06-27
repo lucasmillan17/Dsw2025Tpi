@@ -11,7 +11,7 @@ namespace Dsw2025Tpi.Application.Dtos
     {
         public record Request(
             [Required(ErrorMessage ="El codigo de producto es obligatorio.")]
-            string ProductCode,
+            Guid ProductCode,
 
             [Required(ErrorMessage = "La cantidad es obligatoria.")]
             [Range(0,int.MaxValue, ErrorMessage = "La cantidad no puede ser negativa.")] 
