@@ -39,9 +39,7 @@ namespace Dsw2025Tpi.Api.Controllers
         
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(OrderModelResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<OrderModelResponse>> GetOrderById(Guid id)
+        private async Task<ActionResult<OrderModelResponse>> GetOrderById(Guid id)
         {
             var order = await _orderService.GetOrderById(id);
             if (order == null) return NotFound();
