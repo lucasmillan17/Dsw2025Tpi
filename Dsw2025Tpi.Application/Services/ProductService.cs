@@ -19,8 +19,9 @@ namespace Dsw2025Tpi.Application.Services
         public ProductService(IRepository repository)
         {
             _repository = repository;
-        }
-
+        }  
+    }
+}
         //Creacion de productos
         private Product ProductGenerator(ProductModel.Request r)
         {

@@ -16,6 +16,7 @@ public class Program
         builder.Services.AddScoped<IOrderService,OrderService>();
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<IRepository, EfRepository>();
+
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
