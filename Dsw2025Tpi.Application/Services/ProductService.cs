@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dsw2025Tpi.Domain.Interfaces;
+using Dsw2025Tpi.Data.Repositories.Interfaces;
 using Dsw2025Tpi.Data;
 using Dsw2025Tpi.Application.Dtos;
 using Dsw2025Tpi.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using Dsw2025Tpi.Application.Exceptions;
+using Dsw2025Tpi.Application.Services.Interfaces;
 
 namespace Dsw2025Tpi.Application.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly IRepository _repository;
         public ProductService(IRepository repository)
@@ -43,7 +44,7 @@ namespace Dsw2025Tpi.Application.Services
         }
 
         //Adicion de productos
-        public async Task<ProductModel.Response> CreateProductAsync (ProductModel.Request r)
+        public async Task<ProductModel.Response> CreateProductAsync(ProductModel.Request r)
         {
             var product = ProductGenerator(r);
 
@@ -60,9 +61,9 @@ namespace Dsw2025Tpi.Application.Services
             //Hago el return de todos los productos activos
 
             var productos = await _repository.
-                GetFiltered<Product>(p=>p.IsActive) 
+                GetFiltered<Product>(p => p.IsActive)
                 ?? throw new NotFoundException("No hay productos activos.");
-           return productos.Select(p=>ResponseGenerator(p));
+            return productos.Select(p => ResponseGenerator(p));
         }
         public async Task<ProductModel.Response> UpdateProductsAsync(Guid id, ProductModel.Request r)
         {
