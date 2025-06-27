@@ -9,7 +9,7 @@ namespace Dsw2025Tpi.Domain.Entities
     public class Product : EntityBase
     {
         public Product() { } 
-        public Product(string _sku, string? _name = null, decimal? _price = null, int _stock = 0) {
+        public Product(string _sku, string? _name = null, decimal? _price = null, int? _stock = 0) {
             Sku = _sku;
             Name = _name;
             CurrentUnitPrice = _price;

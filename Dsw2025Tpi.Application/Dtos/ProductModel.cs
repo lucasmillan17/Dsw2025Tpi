@@ -15,26 +15,27 @@ namespace Dsw2025Tpi.Application.Dtos
             string Sku,
 
             [MaxLength(20, ErrorMessage = "El InternalCode no puede superar los 20 caracteres.")]
-            string InternalCode,
+            string? InternalCode,
 
             [MaxLength(50, ErrorMessage = "El Nombre no puede superar los 50 caracteres.")]
-            string Nombre,
+            string? Name,
 
             [MaxLength(60, ErrorMessage = "La descripción no puede superar los 60 caracteres.")]
-            string Description,
+            string? Description,
 
             [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser mayor a 0.")]
-            decimal CurrentUnitPrice,
+            decimal? CurrentUnitPrice,
 
             [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")] 
-            int StockQuantity
+            int? StockQuantity
             );
         public record Response(
+            Guid ProductId,
             string Sku,
-            string Nombre,
-            string Description,
-            decimal CurrentUnitPrice,
-            int StockQuantity
+            string? Name,
+            string? Description,
+            decimal? CurrentUnitPrice,
+            int? StockQuantity
             );
     }
 }
