@@ -26,7 +26,7 @@ namespace Dsw2025Tpi.Application.Services
                 ?? throw new NotFoundException("Cliente inexistente.");
             //Creo una lista de ordenes para añadir las ordenes individualmente
             var orderItems = new List<OrderItem>();
-            //Creo una lista de productos para que no haya incongruencias en stock
+            //Creo una lista de productos para que no haya incongruencias en el stock
             var productsInItems = new List<Product>();
             foreach (var item in r.OrderItems)
             {

@@ -90,6 +90,7 @@ namespace Dsw2025Tpi.Application.Services
         {
             var product = await _repository.GetById<Product>(id) ?? throw new NotFoundException("Producto Inexistente.");
             product.IsActive = false;
+            await _repository.Update(product);
         }
     }
 }

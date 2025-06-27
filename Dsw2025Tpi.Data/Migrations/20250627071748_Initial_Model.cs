@@ -52,7 +52,8 @@ namespace Dsw2025Tpi.Data.Migrations
                     ShippingAddress = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     BillingAddress = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
