@@ -24,15 +24,15 @@ public class Dsw2025TpiContext : DbContext
             eb.Property(p => p.Name).HasMaxLength(50);
             eb.Property(p => p.Description).HasMaxLength(60);
             eb.Property(p => p.CurrentUnitPrice).HasPrecision(15, 2);
+            eb.HasKey(p => p.Id);
         });
         modelBuilder.Entity<Order>(eb =>
         {
             eb.ToTable("Orders");
-            eb.HasKey(o => o.Id);
-            eb.Property(p => p.TotalAmount).HasPrecision(15, 2);
             eb.Property(p => p.ShippingAddress).HasMaxLength(60);
-            eb.Property(p => p.BillingCity).HasMaxLength(60);
+            eb.Property(p => p.BillingAddress).HasMaxLength(60);
             eb.Property(p => p.Notes).HasMaxLength(60);
+            eb.HasKey(p => p.Id);
         });
         modelBuilder.Entity<Customer>(eb =>
         {
@@ -44,6 +44,7 @@ public class Dsw2025TpiContext : DbContext
             eb.ToTable("OrderItems");
             eb.HasKey(oi => oi.Id);
             eb.Property(p => p.UnitPrice).HasPrecision(15, 2);
+            eb.HasKey(p => p.Id);
         });
     }
 }

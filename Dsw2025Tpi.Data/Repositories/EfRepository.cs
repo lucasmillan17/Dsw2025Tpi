@@ -1,7 +1,7 @@
 ﻿using Dsw2025Tpi.Domain.Entities;
-using Dsw2025Tpi.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Dsw2025Tpi.Data.Repositories.Interfaces;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dsw2025Tpi.Data.Repositories;
 

@@ -1,7 +1,7 @@
 ﻿using Dsw2025Tpi.Domain.Entities;
 using System.Linq.Expressions;
 
-namespace Dsw2025Tpi.Domain.Interfaces;
+namespace Dsw2025Tpi.Data.Repositories.Interfaces;
 
 public interface IRepository
 {
