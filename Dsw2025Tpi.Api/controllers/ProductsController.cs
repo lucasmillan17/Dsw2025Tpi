@@ -1,7 +1,7 @@
 using Dsw2025Tpi.Application.Dtos;
-using Dsw2025Tpi.Application.Services;
+using Dsw2025Tpi.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
+using Dsw2025Tpi.Application.Exceptions;
 using System;
 using System.Threading.Tasks;
 namespace Dsw2025Tpi.Api.Controllers
@@ -22,20 +22,29 @@ namespace Dsw2025Tpi.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var product = await _productService.CreateProductAsync(request);
-            return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+            try
+            {
+                var product = await _productService.CreateProductAsync(request);
+                return CreatedAtAction(nameof(GetProductById), new { id = product.ProductId }, product);
+            }
+            catch (DuplicatedItemException ex) { 
+                return BadRequest(ex.Message);
+            }
+            
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
-            if (product == null)
-            {
+            try {
+                var product = await _productService.GetProductByIdAsync(id);
+                return Ok(product);
+            }
+            catch (NotFoundException ex) {
                 return NotFound();
             }
-            return Ok(product);
+            
         }
-
+        [HttpGet]
         public async Task<IActionResult> GetAllProductsAsync()
         {
             var products = await _productService.GetAllProductsAsync();

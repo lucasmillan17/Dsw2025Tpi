@@ -5,9 +5,9 @@ namespace Dsw2025Tpi.Application.Services.Interfaces
     public interface IProductService
     {
         Task<ProductModel.Response> CreateProductAsync(ProductModel.Request r);
-        Task DisableProductByID(Guid id);
-        Task<ProductModel.Response> GetProductByID(Guid id);
-        Task<IEnumerable<ProductModel.Response>> GetProductsAsync();
+        Task DisableProductById(Guid id);
+        Task<ProductModel.Response> GetProductByIdAsync(Guid id);
+        Task<IEnumerable<ProductModel.Response>> GetAllProductsAsync();
         Task<ProductModel.Response> UpdateProductsAsync(Guid id, ProductModel.Request r);
     }
 }

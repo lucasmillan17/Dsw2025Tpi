@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Dsw2025Tpi.Application.Exceptions
 {
-    public class NotFoundException : Exception
+    public class DuplicatedItemException : Exception
     {
-        public NotFoundException() { }
-        public NotFoundException(string message) : base(message) { }
+        public DuplicatedItemException() { }
+        public DuplicatedItemException(string message) : base(message) { }
     }
 }
