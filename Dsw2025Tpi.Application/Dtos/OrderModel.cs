@@ -34,7 +34,7 @@ namespace Dsw2025Tpi.Application.Dtos
             string? ShippingAddress,
             string? BillingAddress,
             string? Notes,
-            OrderItemModel.Request[] OrderItems
+            OrderItemModel.Response[] OrderItems
             );
     }
 }

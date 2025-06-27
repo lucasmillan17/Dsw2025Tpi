@@ -14,9 +14,11 @@ namespace Dsw2025Tpi.Application.Services
     public class OrderService : IOrderService
     {
         private readonly IRepository _repository;
-        public OrderService(IRepository repository)
+        private readonly IProductService _productService;
+        public OrderService(IRepository repository, IProductService productService)
         {
             _repository = repository;
+            _productService = productService;
         }
 
         public async Task<OrderModel.Response> CreateOrder(OrderModel.Request r)
@@ -55,7 +57,49 @@ namespace Dsw2025Tpi.Application.Services
             await _repository.Add<Order>(order);
 
             //Hago el return
-            return new OrderModel.Response(order.Id, order.TotalAmount, order.CustomerId, order.ShippingAddress, order.BillingAddress, order.Notes, r.OrderItems);
+
+            OrderItemModel.Response[] orderItemsResponse = order.OrderItems.Select(
+                p => new OrderItemModel.Response(
+                    p.Product.Name,
+                    p.Product.Description,
+                    p.Quantity,
+                    p.Subtotal
+                    )
+                ).ToArray();
+
+            return new OrderModel.Response(order.Id,
+                order.TotalAmount,
+                order.CustomerId,
+                order.ShippingAddress,
+                order.BillingAddress,
+                order.Notes,
+                orderItemsResponse);
+        }
+
+        public async Task<OrderModel.Response> GetOrderById(Guid id)
+        {
+            var order = await _repository.First<Order>(p => p.Id == id)
+            ?? throw new NotFoundException("La orden no existe.");
+
+            OrderItemModel.Response[] orderItemsResponse = order.OrderItems.Select(
+                p => new OrderItemModel.Response(
+                    p.Product.Name,
+                    p.Product.Description,
+                    p.Quantity,
+                    p.Subtotal
+                    )
+                ).ToArray();
+
+            return (new OrderModel.Response(
+                    order.Id,
+                    order.TotalAmount,
+                    order.CustomerId,
+                    order.ShippingAddress,
+                    order.BillingAddress,
+                    order.Notes,
+                    orderItemsResponse
+                ));
+
         }
     }
 }

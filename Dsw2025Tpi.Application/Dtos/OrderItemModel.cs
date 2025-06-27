@@ -19,10 +19,10 @@ namespace Dsw2025Tpi.Application.Dtos
             );
 
         public record Response(
-            string Name,
-            string Description,
-            int Quantity,
-            decimal Subtotal
+            string? Name,
+            string? Description,
+            int? Quantity,
+            decimal? Subtotal
             );
     }
 }

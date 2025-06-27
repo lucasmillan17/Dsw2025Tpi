@@ -5,5 +5,6 @@ namespace Dsw2025Tpi.Application.Services.Interfaces
     public interface IOrderService
     {
         Task<OrderModel.Response> CreateOrder(OrderModel.Request r);
+        Task<OrderModel.Response> GetOrderById(Guid id);
     }
 }
