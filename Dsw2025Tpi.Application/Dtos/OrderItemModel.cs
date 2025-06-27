@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dsw2025Tpi.Application.Dtos
 {
-    public record OrderItemModel
-    {
-        public record Request(
+        public record OrderItemModelRequest(
             [Required(ErrorMessage ="El codigo de producto es obligatorio.")]
             Guid ProductCode,
 
@@ -18,11 +16,10 @@ namespace Dsw2025Tpi.Application.Dtos
             int Quantity
             );
 
-        public record Response(
-            string Name,
-            string Description,
-            int Quantity,
-            decimal Subtotal
+        public record OrderItemModelResponse(
+            string? Name,
+            string? Description,
+            int? Quantity,
+            decimal? Subtotal
             );
-    }
 }

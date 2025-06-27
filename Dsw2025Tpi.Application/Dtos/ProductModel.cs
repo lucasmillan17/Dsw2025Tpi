@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dsw2025Tpi.Application.Dtos
 {
-    public record ProductModel
-    {
-        public record Request(
+        public record ProductModelRequest(
             [Required(ErrorMessage = "El SKU es obligatorio.")]
             [MaxLength(50,ErrorMessage = "El SKU no puede superar los 50 caracteres.")]
             string Sku,
@@ -29,7 +27,7 @@ namespace Dsw2025Tpi.Application.Dtos
             [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")] 
             int? StockQuantity
             );
-        public record Response(
+        public record ProductModelResponse(
             Guid ProductId,
             string Sku,
             string? Name,
@@ -37,5 +35,4 @@ namespace Dsw2025Tpi.Application.Dtos
             decimal? CurrentUnitPrice,
             int? StockQuantity
             );
-    }
 }

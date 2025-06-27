@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dsw2025Tpi.Application.Dtos
 {
-    public record OrderModel
-    {
-        public record Request(
+        public record OrderModelRequest(
             [Required(ErrorMessage ="Debe especificar un código de cliente.")]
             Guid CustomerId,
 
@@ -22,19 +20,18 @@ namespace Dsw2025Tpi.Application.Dtos
             string BillingAdress,
 
             [Required(ErrorMessage ="La orden debe tener items de compra.")] 
-            OrderItemModel.Request[] OrderItems,
+            OrderItemModelRequest[] OrderItems,
 
             [MaxLength(60,ErrorMessage ="La nota no puede superar los 60 caracteres.")]
             string Notes
             );
-        public record Response(
+        public record OrderModelResponse(
             Guid OrderId,
             decimal? TotalAmount,
             Guid CustomerId,
             string? ShippingAddress,
             string? BillingAddress,
             string? Notes,
-            OrderItemModel.Request[] OrderItems
+            OrderItemModelResponse[] OrderItems
             );
-    }
 }
