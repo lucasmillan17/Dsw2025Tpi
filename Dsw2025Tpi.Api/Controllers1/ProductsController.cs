@@ -16,7 +16,7 @@ namespace Dsw2025Tpi.Api.Controllers
             _productService = productService;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductModel.Request request)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductModelRequest request)
         {
             if (!ModelState.IsValid)
             {

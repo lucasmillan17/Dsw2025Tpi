@@ -21,7 +21,7 @@ namespace Dsw2025Tpi.Application.Services
             _productService = productService;
         }
 
-        public async Task<OrderModel.Response> CreateOrder(OrderModel.Request r)
+        public async Task<OrderModelResponse> CreateOrder(OrderModelRequest r)
         {
             //Verifico que exista el cliente
             var customer = await _repository.GetById<Customer>(r.CustomerId)
@@ -58,8 +58,8 @@ namespace Dsw2025Tpi.Application.Services
 
             //Hago el return
 
-            OrderItemModel.Response[] orderItemsResponse = order.OrderItems.Select(
-                p => new OrderItemModel.Response(
+            OrderItemModelResponse[] orderItemsResponse = order.OrderItems.Select(
+                p => new OrderItemModelResponse(
                     p.Product.Name,
                     p.Product.Description,
                     p.Quantity,
@@ -67,7 +67,7 @@ namespace Dsw2025Tpi.Application.Services
                     )
                 ).ToArray();
 
-            return new OrderModel.Response(order.Id,
+            return new OrderModelResponse(order.Id,
                 order.TotalAmount,
                 order.CustomerId,
                 order.ShippingAddress,
@@ -76,13 +76,13 @@ namespace Dsw2025Tpi.Application.Services
                 orderItemsResponse);
         }
 
-        public async Task<OrderModel.Response> GetOrderById(Guid id)
+        public async Task<OrderModelResponse> GetOrderById(Guid id)
         {
             var order = await _repository.First<Order>(p => p.Id == id)
             ?? throw new NotFoundException("La orden no existe.");
 
-            OrderItemModel.Response[] orderItemsResponse = order.OrderItems.Select(
-                p => new OrderItemModel.Response(
+            OrderItemModelResponse[] orderItemsResponse = order.OrderItems.Select(
+                p => new OrderItemModelResponse(
                     p.Product.Name,
                     p.Product.Description,
                     p.Quantity,
@@ -90,7 +90,7 @@ namespace Dsw2025Tpi.Application.Services
                     )
                 ).ToArray();
 
-            return (new OrderModel.Response(
+            return (new OrderModelResponse(
                     order.Id,
                     order.TotalAmount,
                     order.CustomerId,

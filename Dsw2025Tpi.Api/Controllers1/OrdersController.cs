@@ -17,7 +17,7 @@ namespace Dsw2025Tpi.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] OrderModel.Request request)
+        public async Task<IActionResult> CreateOrder([FromBody] OrderModelRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -26,21 +26,28 @@ namespace Dsw2025Tpi.Api.Controllers
             try
             {
                 var order = await _orderService.CreateOrder(request);
-                return CreatedAtAction(nameof(GetOrderById), new {id = order.OrderId}, order);
+                return CreatedAtAction(nameof(GetOrderById), new { id = order.OrderId }, order);
             }
-            catch (DuplicatedItemException ex)
+            catch (NotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
+            catch (InsufficientStockException ex) { 
+                return BadRequest(ex.Message);
+            }
         }
+        
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderModel.Response>> GetOrderById(Guid id)
+        [ProducesResponseType(typeof(OrderModelResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<OrderModelResponse>> GetOrderById(Guid id)
         {
             var order = await _orderService.GetOrderById(id);
             if (order == null) return NotFound();
             return Ok(order);
         }
+        
 
     }
 }

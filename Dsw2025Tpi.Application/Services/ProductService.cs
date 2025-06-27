@@ -22,7 +22,7 @@ namespace Dsw2025Tpi.Application.Services
             _repository = repository;
         }  
         //Creacion de productos
-        private Product ProductGenerator(ProductModel.Request r)
+        private Product ProductGenerator(ProductModelRequest r)
         {
             var product = new Product(r.Sku, r.Name, r.CurrentUnitPrice, r.StockQuantity);
             //Completamos los datos del producto de ser necesario
@@ -31,9 +31,9 @@ namespace Dsw2025Tpi.Application.Services
             //Retorno el producto completo
             return product;
         }
-        private ProductModel.Response ResponseGenerator(Product p)
+        private ProductModelResponse ResponseGenerator(Product p)
         {
-            return new ProductModel.Response(
+            return new ProductModelResponse(
                 p.Id,
                 p.Sku,
                 p.Name,
@@ -44,7 +44,7 @@ namespace Dsw2025Tpi.Application.Services
         }
 
         //Adicion de productos
-        public async Task<ProductModel.Response> CreateProductAsync(ProductModel.Request r)
+        public async Task<ProductModelResponse> CreateProductAsync(ProductModelRequest r)
         {
             var product = ProductGenerator(r);
             //Revisamos que no haya un producto con el mismo sku antes
@@ -58,7 +58,7 @@ namespace Dsw2025Tpi.Application.Services
         }
 
         //Obtencion de productos disponibles
-        public async Task<IEnumerable<ProductModel.Response>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductModelResponse>> GetAllProductsAsync()
         {
             //Hago el return de todos los productos activos
 
@@ -67,7 +67,7 @@ namespace Dsw2025Tpi.Application.Services
                 ?? throw new NotFoundException("No hay productos activos.");
             return productos.Select(p => ResponseGenerator(p));
         }
-        public async Task<ProductModel.Response> UpdateProductsAsync(Guid id, ProductModel.Request r)
+        public async Task<ProductModelResponse> UpdateProductsAsync(Guid id, ProductModelRequest r)
         {
             //Obtengo el producto a modificar de la base de datos
             var product = await _repository.GetById<Product>(id)
@@ -83,7 +83,7 @@ namespace Dsw2025Tpi.Application.Services
             var response = await _repository.Update(product);
             return ResponseGenerator(response);
         }
-        public async Task<ProductModel.Response> GetProductByIdAsync(Guid id)
+        public async Task<ProductModelResponse> GetProductByIdAsync(Guid id)
         {
             var product = await _repository.GetById<Product>(id) ?? throw new NotFoundException("Producto Inexistente.");
             return ResponseGenerator(product);
