@@ -54,6 +54,19 @@ namespace Dsw2025Tpi.Api.Controllers
             }
             return Ok(products);
         }
-       
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> DisableProductById(Guid id)
+        {
+            try
+            {
+                await _productService.DisableProductById(id);
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+
+                return NotFound();
+            }
+        }
     }
 }
