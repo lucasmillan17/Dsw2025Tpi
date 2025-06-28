@@ -26,8 +26,10 @@ namespace Dsw2025Tpi.Application.Services
             //Verifico que exista el cliente
             var customer = await _repository.GetById<Customer>(r.CustomerId)
                 ?? throw new NotFoundException("Cliente inexistente.");
+
             //Creo una lista de ordenes para añadir las ordenes individualmente
             var orderItems = new List<OrderItem>();
+
             //Creo una lista de productos para que no haya incongruencias en el stock
             var productsInItems = new List<Product>();
             foreach (var item in r.OrderItems)
@@ -43,7 +45,9 @@ namespace Dsw2025Tpi.Application.Services
                 //Hacemos validaciones
                 if (product.StockQuantity < item.Quantity)
                     throw new InsufficientStockException($"El stock del producto Id:{product.Id} Nombre:{product.Name} no es suficiente.");
+
                 //Disminuyo el stock del producto
+
                 product.StockQuantity -= item.Quantity;
                 //Añado el OrderItem
                 orderItems.Add(new OrderItem(product, item.Quantity));
