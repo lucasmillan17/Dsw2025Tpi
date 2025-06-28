@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dsw2025Tpi.Data.Migrations
 {
     [DbContext(typeof(Dsw2025TpiContext))]
-    [Migration("20250627071748_Initial_Model")]
-    partial class Initial_Model
+    [Migration("20250628001742_Model_v1")]
+    partial class Model_v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,12 +139,15 @@ namespace Dsw2025Tpi.Data.Migrations
 
                     b.Property<string>("Sku")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("StockQuantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Sku")
+                        .IsUnique();
 
                     b.ToTable("Products", (string)null);
                 });

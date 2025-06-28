@@ -49,7 +49,7 @@ namespace Dsw2025Tpi.Application.Dtos
             [MaxLength(60, ErrorMessage = "La descripción no puede superar los 60 caracteres.")]
             string? Description,
 
-            [Range(0, double.MaxValue, ErrorMessage = "El precio debe ser mayor a 0.")]
+            [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser mayor a 0.")]
             decimal? CurrentUnitPrice,
 
             [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")]

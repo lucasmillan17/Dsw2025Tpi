@@ -136,12 +136,15 @@ namespace Dsw2025Tpi.Data.Migrations
 
                     b.Property<string>("Sku")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("StockQuantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Sku")
+                        .IsUnique();
 
                     b.ToTable("Products", (string)null);
                 });

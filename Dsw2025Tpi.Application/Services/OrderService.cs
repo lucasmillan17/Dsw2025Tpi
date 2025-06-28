@@ -37,6 +37,7 @@ namespace Dsw2025Tpi.Application.Services
                 {
                     product = await _repository.GetById<Product>(item.ProductCode)        //Si no existe en productsInItems lo obtengo de la database
                     ?? throw new NotFoundException($"Producto Id:{item.ProductCode} no encontrado");
+                    if (!product.IsActive) throw new InactiveProductException($"Producto Id:{item.ProductCode} esta inactivo");
                     productsInItems.Add(product);   //Por ultimo añado el item a productsInItems
                 }
                 //Hacemos validaciones

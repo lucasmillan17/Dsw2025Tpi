@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Dsw2025Tpi.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_Model : Migration
+    public partial class Model_v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +30,7 @@ namespace Dsw2025Tpi.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Sku = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sku = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     InternalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
@@ -107,6 +107,12 @@ namespace Dsw2025Tpi.Data.Migrations
                 name: "IX_Orders_CustomerId",
                 table: "Orders",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_Sku",
+                table: "Products",
+                column: "Sku",
+                unique: true);
         }
 
         /// <inheritdoc />

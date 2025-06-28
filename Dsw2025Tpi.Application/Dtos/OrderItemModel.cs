@@ -12,7 +12,7 @@ namespace Dsw2025Tpi.Application.Dtos
             Guid ProductCode,
 
             [Required(ErrorMessage = "La cantidad es obligatoria.")]
-            [Range(0,int.MaxValue, ErrorMessage = "La cantidad no puede ser negativa.")] 
+            [Range(1,int.MaxValue, ErrorMessage = "La cantidad no puede ser negativa o 0.")] 
             int Quantity
             );
 

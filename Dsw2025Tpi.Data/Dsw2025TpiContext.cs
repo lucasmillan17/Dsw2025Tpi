@@ -24,7 +24,8 @@ public class Dsw2025TpiContext : DbContext
             eb.Property(p => p.Name).HasMaxLength(50);
             eb.Property(p => p.Description).HasMaxLength(60);
             eb.Property(p => p.CurrentUnitPrice).HasPrecision(15, 2);
-            eb.HasKey(p => p.Id);
+            eb.HasIndex(p => p.Sku).IsUnique();
+
         });
         modelBuilder.Entity<Order>(eb =>
         {
