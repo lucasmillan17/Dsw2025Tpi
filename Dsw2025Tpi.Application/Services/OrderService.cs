@@ -81,8 +81,12 @@ namespace Dsw2025Tpi.Application.Services
 
         public async Task<OrderModelResponse> GetOrderById(Guid id)
         {
-            var order = await _repository.First<Order>(p => p.Id == id)
-            ?? throw new NotFoundException("La orden no existe.");
+            var order = await _repository.First<Order>(
+                 p => p.Id == id,
+                 "OrderItems",
+                 "OrderItems.Product",
+                 "Customer"
+                ) ?? throw new NotFoundException("La orden no existe.");
 
             OrderItemModelResponse[] orderItemsResponse = order.OrderItems.Select(
                 p => new OrderItemModelResponse(
