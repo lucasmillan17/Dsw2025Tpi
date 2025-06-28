@@ -10,9 +10,10 @@ namespace Dsw2025Tpi.Domain.Entities
     public class OrderItem : EntityBase
     {
         public OrderItem() { }
-        public OrderItem(Product _product, int _quantity) {
-            this.UnitPrice = _product.CurrentUnitPrice;
-            this.Quantity = _quantity;
+        public OrderItem(Product product, int quantity) {
+            this.UnitPrice = product.CurrentUnitPrice;
+            this.Quantity = quantity;
+            this.ProductId = product.Id;
         }
         public int Quantity { get; set; }
         public decimal? UnitPrice { get; private set; }

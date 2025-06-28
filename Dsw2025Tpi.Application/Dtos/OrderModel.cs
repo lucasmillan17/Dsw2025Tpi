@@ -23,7 +23,7 @@ namespace Dsw2025Tpi.Application.Dtos
             OrderItemModelRequest[] OrderItems,
 
             [MaxLength(60,ErrorMessage ="La nota no puede superar los 60 caracteres.")]
-            string Notes
+            string? Notes
             );
         public record OrderModelResponse(
             Guid OrderId,

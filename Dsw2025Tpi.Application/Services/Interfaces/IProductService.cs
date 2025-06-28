@@ -8,6 +8,6 @@ namespace Dsw2025Tpi.Application.Services.Interfaces
         Task DisableProductById(Guid id);
         Task<ProductModelResponse> GetProductByIdAsync(Guid id);
         Task<IEnumerable<ProductModelResponse>> GetAllProductsAsync();
-        Task<ProductModelResponse> UpdateProductsAsync(Guid id, ProductModelRequest r);
+        Task<ProductModelResponse> UpdateProductsAsync(Guid id, ProductModelUpdateRequest r);
     }
 }

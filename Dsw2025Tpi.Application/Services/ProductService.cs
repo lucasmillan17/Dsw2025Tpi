@@ -67,7 +67,7 @@ namespace Dsw2025Tpi.Application.Services
                 ?? throw new NotFoundException("No hay productos activos.");
             return productos.Select(p => ResponseGenerator(p));
         }
-        public async Task<ProductModelResponse> UpdateProductsAsync(Guid id, ProductModelRequest r)
+        public async Task<ProductModelResponse> UpdateProductsAsync(Guid id, ProductModelUpdateRequest r)
         {
             //Obtengo el producto a modificar de la base de datos
             var product = await _repository.GetById<Product>(id)

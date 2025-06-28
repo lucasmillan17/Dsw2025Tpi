@@ -35,7 +35,7 @@ namespace Dsw2025Tpi.Application.Services
                 var product = productsInItems.Find(p => p.Id == item.ProductCode);   //Si el elemento existe anteriormente lo saco de productsInItems
                 if (product is null)
                 {
-                    product = await _repository.GetById<Product>(item.ProductCode)        //Si no existe en productsInItems lo saco de la database
+                    product = await _repository.GetById<Product>(item.ProductCode)        //Si no existe en productsInItems lo obtengo de la database
                     ?? throw new NotFoundException($"Producto Id:{item.ProductCode} no encontrado");
                     productsInItems.Add(product);   //Por ultimo añado el item a productsInItems
                 }
@@ -47,14 +47,16 @@ namespace Dsw2025Tpi.Application.Services
                 //Añado el OrderItem
                 orderItems.Add(new OrderItem(product, item.Quantity));
             }
+            //Creo la orden y la guardo en la database
+            var order = new Order(customer, r.ShippingAddress, r.BillingAdress, orderItems);
+            order.Notes = r.Notes;
+            await _repository.Add<Order>(order);
+
             //Actualizo el stock de los productos en la database
             foreach (var p in productsInItems)
             {
                 await _repository.Update<Product>(p);
             }
-            //Creo la orden y la guardo en la database
-            var order = new Order(customer, r.ShippingAddress, r.BillingAdress, orderItems);
-            await _repository.Add<Order>(order);
 
             //Hago el return
 

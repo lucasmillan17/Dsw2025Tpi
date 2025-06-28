@@ -35,4 +35,24 @@ namespace Dsw2025Tpi.Application.Dtos
             decimal? CurrentUnitPrice,
             int? StockQuantity
             );
+
+        public record ProductModelUpdateRequest(
+            [MaxLength(50,ErrorMessage = "El SKU no puede superar los 50 caracteres.")]
+            string? Sku,
+
+            [MaxLength(20, ErrorMessage = "El InternalCode no puede superar los 20 caracteres.")]
+            string? InternalCode,
+
+            [MaxLength(50, ErrorMessage = "El Nombre no puede superar los 50 caracteres.")]
+            string? Name,
+
+            [MaxLength(60, ErrorMessage = "La descripción no puede superar los 60 caracteres.")]
+            string? Description,
+
+            [Range(0, double.MaxValue, ErrorMessage = "El precio debe ser mayor a 0.")]
+            decimal? CurrentUnitPrice,
+
+            [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")]
+            int? StockQuantity
+            );
 }

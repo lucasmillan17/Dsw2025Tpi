@@ -10,15 +10,17 @@ namespace Dsw2025Tpi.Domain.Entities
     public class Order : EntityBase
     {
         public Order() { }
-        public Order(Customer _customer, string _shippingAddress, string _billingAdress, List<OrderItem> _orderItems) { 
-            Customer = _customer;
-            ShippingAddress = _shippingAddress;
-            BillingAddress = _billingAdress;
+        public Order(Customer customer, string shippingAddress, string billingAdress, List<OrderItem> orderItems) { 
+            Customer = customer;
+            CustomerId = customer.Id;
+            ShippingAddress = shippingAddress;
+            BillingAddress = billingAdress;
 
-            foreach (var item in _orderItems) { 
+            foreach (var item in orderItems) { 
                 OrderItems.Add(item);    
             }
             Status = OrderStatus.PENDING;
+            Date = DateTime.Now;
         }
         public DateTime Date { get; set; }
         public string ShippingAddress { get; set; }

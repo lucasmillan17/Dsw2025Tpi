@@ -40,7 +40,7 @@ namespace Dsw2025Tpi.Api.Controllers
                 return Ok(product);
             }
             catch (NotFoundException ex) {
-                return NotFound();
+                return NotFound(ex.Message);
             }
             
         }
@@ -65,11 +65,11 @@ namespace Dsw2025Tpi.Api.Controllers
             catch (NotFoundException ex)
             {
 
-                return NotFound();
+                return NotFound(ex.Message);
             }
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(Guid id,[FromBody] ProductModelRequest request)
+        public async Task<IActionResult> UpdateProduct(Guid id,[FromBody] ProductModelUpdateRequest request)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Dsw2025Tpi.Api.Controllers
             }
             catch (NotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
             catch (DuplicatedItemException ex)
             {

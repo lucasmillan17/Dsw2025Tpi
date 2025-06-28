@@ -1,9 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Dsw2025Tpi.Data;
 using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Application.Services.Interfaces;
+using Dsw2025Tpi.Data;
 using Dsw2025Tpi.Data.Repositories;
+using Dsw2025Tpi.Data.Helpers;
 using Dsw2025Tpi.Data.Repositories.Interfaces;
+using Dsw2025Tpi.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 namespace Dsw2025Tpi.Api;
 
 public class Program
@@ -23,10 +25,18 @@ public class Program
         builder.Services.AddDbContext<Dsw2025TpiContext>(options => {
             options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Dsw2025Db;Integrated Security=True;");
         });
+
+        
         builder.Services.AddSwaggerGen();
         builder.Services.AddHealthChecks();
 
         var app = builder.Build();
+        //Agrego los clientes a la db
+        using (var scope = app.Services.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<Dsw2025TpiContext>();
+            context.Seedwork<Customer>("Resources/clients.json");
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

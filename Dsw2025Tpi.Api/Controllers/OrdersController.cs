@@ -39,7 +39,7 @@ namespace Dsw2025Tpi.Api.Controllers
         
 
         [HttpGet("{id}")]
-        private async Task<ActionResult<OrderModelResponse>> GetOrderById(Guid id)
+        public async Task<ActionResult<OrderModelResponse>> GetOrderById(Guid id)
         {
             var order = await _orderService.GetOrderById(id);
             if (order == null) return NotFound();
