@@ -31,6 +31,7 @@ namespace Dsw2025Tpi.Application.Dtos
             Guid ProductId,
             string Sku,
             string? Name,
+            string? InternalCode,
             string? Description,
             decimal? CurrentUnitPrice,
             int? StockQuantity

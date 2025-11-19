@@ -1,10 +1,12 @@
 using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Application.Services.Interfaces;
 using Dsw2025Tpi.Data;
-using Dsw2025Tpi.Data.Repositories;
 using Dsw2025Tpi.Data.Helpers;
+using Dsw2025Tpi.Data.Repositories;
 using Dsw2025Tpi.Data.Repositories.Interfaces;
 using Dsw2025Tpi.Domain.Entities;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 namespace Dsw2025Tpi.Api;
 
@@ -29,6 +31,8 @@ public class Program
         
         builder.Services.AddSwaggerGen();
         builder.Services.AddHealthChecks();
+        builder.Services.AddAuthentication()
+            .AddJwtBearer();
 
         var app = builder.Build();
         //Agrego los clientes a la db
@@ -45,6 +49,30 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseExceptionHandler(errorApp =>
+        {
+            errorApp.Run(async context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.ContentType = "application/json";
+
+                var feature = context.Features.Get<IExceptionHandlerFeature>();
+                var ex = feature?.Error;
+
+                var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "Unhandled exception");
+
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "Error interno del servidor",
+                    Detail = builder.Environment.IsDevelopment() ? ex?.Message : null
+                };
+
+                await context.Response.WriteAsJsonAsync(problem);
+            });
+        });
 
         app.UseHttpsRedirection();
 

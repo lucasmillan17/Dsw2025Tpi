@@ -32,6 +32,7 @@ namespace Dsw2025Tpi.Application.Dtos
             string? ShippingAddress,
             string? BillingAddress,
             string? Notes,
+            string? Status,
             OrderItemModelResponse[] OrderItems
             );
 }

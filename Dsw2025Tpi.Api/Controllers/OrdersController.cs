@@ -49,7 +49,37 @@ namespace Dsw2025Tpi.Api.Controllers
             if (order == null) return NotFound();
             return Ok(order);
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var order = await _orderService.GetAllOrders();
+            if (order == null) return NotFound();
+            return Ok(order);
+        }
+
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] NewOrderStatusModel nw)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var order = await _orderService.UpdateOrderStatus(id, nw);
+                return Ok(order);
+            }
+            catch(NotFoundException ex) { 
+                return NotFound(ex.Message);
+            }
+            catch(ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
 
     }
 }
