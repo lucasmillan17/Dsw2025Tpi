@@ -2,6 +2,7 @@
 using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Application.Services.Interfaces;
 using Dsw2025Tpi.Domain.Entities;
+using Dsw2025Tpi.Domain.Enums;
 using Dsw2025Tpi.Data.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,28 @@ namespace Dsw2025Tpi.Application.Services
         {
             _repository = repository;
             _productService = productService;
+        }
+
+        private OrderModelResponse OrderResponseGenerator(Order r)
+        {
+            OrderItemModelResponse[] orderItemsResponse = r.OrderItems.Select(
+                p => new OrderItemModelResponse(
+                    p.Product.Name,
+                    p.Product.Description,
+                    p.Quantity,
+                    p.Subtotal
+                    )
+                ).ToArray();
+
+            return new OrderModelResponse(
+                r.Id,
+                r.TotalAmount,
+                r.CustomerId,
+                r.ShippingAddress,
+                r.BillingAddress,
+                r.Notes,
+                r.Status.ToString(),
+                orderItemsResponse);
         }
 
         public async Task<OrderModelResponse> CreateOrder(OrderModelRequest r)
@@ -80,33 +103,59 @@ namespace Dsw2025Tpi.Application.Services
                 order.ShippingAddress,
                 order.BillingAddress,
                 order.Notes,
+                order.Status.ToString(),
                 orderItemsResponse);
         }
 
         public async Task<OrderModelResponse> GetOrderById(Guid id)
         {
-            var order = await _repository.First<Order>(p => p.Id == id)
+            var order = await _repository.First<Order>(p => p.Id == id, "OrderItems", "OrderItems.Product")
             ?? throw new NotFoundException("La orden no existe.");
 
-            OrderItemModelResponse[] orderItemsResponse = order.OrderItems.Select(
-                p => new OrderItemModelResponse(
-                    p.Product.Name,
-                    p.Product.Description,
-                    p.Quantity,
-                    p.Subtotal
-                    )
-                ).ToArray();
-
-            return (new OrderModelResponse(
-                    order.Id,
-                    order.TotalAmount,
-                    order.CustomerId,
-                    order.ShippingAddress,
-                    order.BillingAddress,
-                    order.Notes,
-                    orderItemsResponse
-                ));
+            return OrderResponseGenerator(order);
 
         }
+
+        public async Task<IEnumerable<OrderModelResponse>> GetAllOrders()
+        {
+            var order = await _repository.GetAll<Order>("OrderItems", "OrderItems.Product")
+            ?? throw new NotFoundException("La orden no existe.");
+
+            var result = order.Select(o =>
+            {
+                return OrderResponseGenerator(o);
+            });
+
+            return result;
+
+        }
+
+        public async Task<OrderModelResponse> UpdateOrderStatus(Guid id, NewOrderStatusModel r)
+        {
+            if (r is null) throw new ArgumentException("Request vacío.");
+
+            // Parsear y validar nuevo estado
+            if (!Enum.TryParse<OrderStatus>(r.NewOrderStatus, true, out var newStatus))
+            {
+                throw new ArgumentException($"Estado inválido: '{r.NewOrderStatus}'.");
+            }
+
+            // Obtener la orden con sus relaciones para devolver el DTO completo
+            var order = await _repository.First<Order>(p => p.Id == id, "OrderItems", "OrderItems.Product")
+                ?? throw new NotFoundException("La orden no existe.");
+
+            // Validar transición
+            if (!order.CanTransitionTo(newStatus))
+            {
+                throw new ArgumentException($"Transición no permitida de {order.Status} a {newStatus}.");
+            }
+
+            // Aplicar cambio y persistir
+            order.ChangeStatus(newStatus);
+            await _repository.Update<Order>(order);
+
+            return OrderResponseGenerator(order);
+        }
+
     }
 }

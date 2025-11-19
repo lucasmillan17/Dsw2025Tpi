@@ -6,5 +6,7 @@ namespace Dsw2025Tpi.Application.Services.Interfaces
     {
         Task<OrderModelResponse> CreateOrder(OrderModelRequest r);
         Task<OrderModelResponse> GetOrderById(Guid id);
+        Task<IEnumerable<OrderModelResponse>> GetAllOrders();
+        Task<OrderModelResponse> UpdateOrderStatus(Guid id, NewOrderStatusModel r);
     }
 }

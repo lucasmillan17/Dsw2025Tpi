@@ -37,6 +37,7 @@ namespace Dsw2025Tpi.Application.Services
                 p.Id,
                 p.Sku,
                 p.Name,
+                p.InternalCode,
                 p.Description,
                 p.CurrentUnitPrice,
                 p.StockQuantity

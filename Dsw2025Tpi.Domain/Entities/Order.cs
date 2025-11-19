@@ -32,5 +32,31 @@ namespace Dsw2025Tpi.Domain.Entities
         //Sumamos los subtotales de los items para obtener el total de la orden
         public decimal? TotalAmount => OrderItems.Sum(item => item.Subtotal);
         public OrderStatus Status { get; set; }
+
+        // Indica si el estado actual es final (no permiten transiciones)
+        public bool IsFinalState => Status == OrderStatus.DELIVERED || Status == OrderStatus.CANCELLED;
+
+        // Comprueba si es posible transicionar desde el estado actual al estado pedido
+        public bool CanTransitionTo(OrderStatus newStatus)
+        {
+            if (Status == newStatus) return false;
+
+            return Status switch
+            {
+                OrderStatus.PENDING => newStatus == OrderStatus.PROCESSING || newStatus == OrderStatus.CANCELLED,
+                OrderStatus.PROCESSING => newStatus == OrderStatus.SHIPPED || newStatus == OrderStatus.CANCELLED,
+                OrderStatus.SHIPPED => newStatus == OrderStatus.DELIVERED,
+                _ => false,
+            };
+        }
+
+        // Cambia el estado validando primero; lanza InvalidOperationException si no está permitido
+        public void ChangeStatus(OrderStatus newStatus)
+        {
+            if (!CanTransitionTo(newStatus))
+                throw new InvalidOperationException($"Transición no permitida de {Status} a {newStatus}.");
+
+            Status = newStatus;
+        }
     }
 }
