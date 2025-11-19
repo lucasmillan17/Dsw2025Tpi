@@ -2,6 +2,7 @@
 using Dsw2025Tpi.Application.Exceptions;
 using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dsw2025Tpi.Api.Controllers
@@ -17,6 +18,7 @@ namespace Dsw2025Tpi.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Master, Client")]
         public async Task<IActionResult> CreateOrder([FromBody] OrderModelRequest request)
         {
             if (!ModelState.IsValid)
@@ -43,6 +45,7 @@ namespace Dsw2025Tpi.Api.Controllers
         
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Master, Admin, Client")]
         public async Task<ActionResult<OrderModelResponse>> GetOrderById(Guid id)
         {
             var order = await _orderService.GetOrderById(id);
@@ -59,6 +62,7 @@ namespace Dsw2025Tpi.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Master, Admin")]
 
         public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] NewOrderStatusModel nw)
         {

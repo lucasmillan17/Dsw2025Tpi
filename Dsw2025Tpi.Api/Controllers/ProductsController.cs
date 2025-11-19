@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Dsw2025Tpi.Application.Exceptions;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 namespace Dsw2025Tpi.Api.Controllers
 {
     [ApiController]
@@ -16,6 +17,7 @@ namespace Dsw2025Tpi.Api.Controllers
             _productService = productService;
         }
         [HttpPost]
+        [Authorize(Roles = "Master, Admin")]
         public async Task<IActionResult> CreateProduct([FromBody] ProductModelRequest request)
         {
             if (!ModelState.IsValid)
@@ -33,6 +35,7 @@ namespace Dsw2025Tpi.Api.Controllers
             
         }
         [HttpGet("{id}")]
+        [Authorize(Roles = "Master, Admin, Client")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             try {
@@ -45,6 +48,7 @@ namespace Dsw2025Tpi.Api.Controllers
             
         }
         [HttpGet]
+        [Authorize( Roles = "Master, Admin, Client")]
         public async Task<IActionResult> GetAllProductsAsync()
         {
             var products = await _productService.GetAllProductsAsync();
@@ -55,6 +59,7 @@ namespace Dsw2025Tpi.Api.Controllers
             return Ok(products);
         }
         [HttpPatch("{id}")]
+        [Authorize(Roles = "Master, Admin")]
         public async Task<IActionResult> DisableProductById(Guid id)
         {
             try
@@ -67,8 +72,10 @@ namespace Dsw2025Tpi.Api.Controllers
 
                 return NotFound(ex.Message);
             }
+           
         }
         [HttpPut("{id}")]
+        [Authorize(Roles = "Master, Admin")]
         public async Task<IActionResult> UpdateProduct(Guid id,[FromBody] ProductModelUpdateRequest request)
         {
             try
