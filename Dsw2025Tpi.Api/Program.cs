@@ -81,6 +81,16 @@ public class Program
         var keyText = jwtConfig["Key"] ?? throw new ArgumentNullException("JWT Key");
         var key = Encoding.UTF8.GetBytes(keyText);
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("PermitirFrontend", policy =>
+                policy.WithOrigins("http://localhost:5173")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials());
+        });
+
+
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -135,13 +145,7 @@ public class Program
             options.UseSqlServer(builder.Configuration.GetConnectionString("Dsw2025TpiEntities"));
         });
 
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("PermitirFrontend", policy =>
-                policy.WithOrigins("http://localhost:3000")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod());
-        });
+        
 
         var app = builder.Build();
         //Agrego los clientes a la db
@@ -184,6 +188,10 @@ public class Program
         });
 
         app.UseHttpsRedirection();
+
+        app.UseCors("PermitirFrontend");
+
+        app.UseAuthentication();
 
         app.UseAuthorization();
 

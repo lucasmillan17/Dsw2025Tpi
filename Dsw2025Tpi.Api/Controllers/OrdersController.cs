@@ -54,6 +54,7 @@ namespace Dsw2025Tpi.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Master, Admin")]
         public async Task<IActionResult> GetAllOrders()
         {
             var order = await _orderService.GetAllOrders();

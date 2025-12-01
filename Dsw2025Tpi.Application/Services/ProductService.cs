@@ -33,6 +33,12 @@ namespace Dsw2025Tpi.Application.Services
         }
         private ProductModelResponse ResponseGenerator(Product p)
         {
+            var status = "disabled";
+            if (p.IsActive)
+            {
+                status = "active";
+            }
+
             return new ProductModelResponse(
                 p.Id,
                 p.Sku,
@@ -40,7 +46,8 @@ namespace Dsw2025Tpi.Application.Services
                 p.InternalCode,
                 p.Description,
                 p.CurrentUnitPrice,
-                p.StockQuantity
+                p.StockQuantity,
+                status
                 );
         }
 
@@ -95,5 +102,29 @@ namespace Dsw2025Tpi.Application.Services
             product.IsActive = false;
             await _repository.Update(product);
         }
+
+        public async Task<ProductModelResponsePagination?> GetProducts(ProductFilterProduct request)
+        {
+            var isActive = request.Status == "enabled"
+                ? (bool?)true
+                : request.Status == "disabled"
+                    ? (bool?)false
+                    : null;
+
+            var activeProducts = await _repository.GetFiltered<Product>(
+                p => (isActive == null || p.IsActive == isActive)
+                && (string.IsNullOrEmpty(request.Search) || p.Name.Contains(request.Search))
+            );
+                if (activeProducts is null || !activeProducts.Any()) {
+                throw new NotFoundException("No hay productos que coincidan con el filtro.");
+            }
+                var products = activeProducts.Select(p => ResponseGenerator(p))
+                .OrderBy(p => p.Sku)
+                .Skip((request.PageNumber - 1) * request.PageSize ?? 0)
+                .Take(request.PageSize ?? activeProducts.Count())
+                ;
+            return new ProductModelResponsePagination(products.ToList(), activeProducts.Count());
+        }
+
     }
 }

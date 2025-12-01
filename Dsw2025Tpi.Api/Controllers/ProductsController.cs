@@ -92,5 +92,19 @@ namespace Dsw2025Tpi.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("admin")]
+        [Authorize(Roles = "Master, Admin")]
+
+        public async Task<IActionResult> GetAuthProducts([FromQuery] ProductFilterProduct request)
+        {
+            var products = await _productService.GetProducts(request);
+            if (products == null)
+            {
+                Response.Headers.Append("X-Message", "No hay productos que coincidan con el filtro");
+                return NoContent();
+            }
+            return Ok(products);
+                
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace Dsw2025Tpi.Application.Dtos
             Guid OrderId,
             decimal? TotalAmount,
             Guid CustomerId,
+            string? CustomerName,
             string? ShippingAddress,
             string? BillingAddress,
             string? Notes,

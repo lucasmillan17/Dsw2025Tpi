@@ -34,7 +34,8 @@ namespace Dsw2025Tpi.Application.Dtos
             string? InternalCode,
             string? Description,
             decimal? CurrentUnitPrice,
-            int? StockQuantity
+            int? StockQuantity,
+            string status
             );
 
         public record ProductModelUpdateRequest(
@@ -55,5 +56,18 @@ namespace Dsw2025Tpi.Application.Dtos
 
             [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")]
             int? StockQuantity
+            );
+
+        public record ProductModelResponsePagination(
+                List<ProductModelResponse> Products,
+                int TotalCount
+            );
+        
+        public record ProductFilterProduct(
+            
+            string? Status,
+            string? Search,
+            int? PageNumber,
+            int? PageSize
             );
 }

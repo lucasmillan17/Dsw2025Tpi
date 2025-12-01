@@ -2,6 +2,7 @@
 using Dsw2025Tpi.Application.Dtos;
 using Dsw2025Tpi.Application.Services;
 using Dsw2025Tpi.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -27,25 +28,34 @@ public class AuthenticateController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginModelRequest request)
     {
         var user = await _userManager.FindByNameAsync(request.Username);
         if (user == null)
         {
-            return Unauthorized("Usuario o contraseña incorrectos");
+            return Unauthorized(new { 
+                error = "Usuario o contraseña incorrectos" 
+            });
         }
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
         if (!result.Succeeded)
         {
-            return Unauthorized("Usuario o contraseña incorrectos");
+            return Unauthorized(new
+            {
+                error = "Usuario o contraseña incorrectos"
+            });
         }
 
-        var token = _jwtTokenService.GenerateToken(user);
-        return Ok(new { token });
+        var token = await _jwtTokenService.GenerateToken(user);
+        return Ok(new {
+            token 
+        });
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
 
@@ -54,34 +64,19 @@ public class AuthenticateController : ControllerBase
             return BadRequest("Rol invalido");
         }
 
-        if(model.Username == "lucasCliente")
-        {
-            var userprop = await _userManager.FindByNameAsync(model.Username);
-            if (!Enum.TryParse<ValidRoles>("Client", true, out var parsedRole1))
-            {
-                return BadRequest("Rol invalido");
-            }
-            var assignRoleResultprop = await _userManager.AddToRoleAsync(userprop, parsedRole1.ToString());
-            if (!assignRoleResultprop.Succeeded)
-                return BadRequest(assignRoleResultprop.Errors);
-            return Ok(new
-            {
-                message = "Cambiamos bien el rol wacho",
-                role = parsedRole
-            });
-        }
-
         var user = new IdentityUser { UserName = model.Username, Email = model.Email };
-        
-        var assignRoleResult = await _userManager.AddToRoleAsync(user, parsedRole.ToString());
-
-        if (!assignRoleResult.Succeeded)
-            return BadRequest(assignRoleResult.Errors);
 
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (!result.Succeeded)
             return BadRequest(result.Errors);
+
+        var createdUser = await _userManager.FindByNameAsync(model.Username);
+
+        var assignRoleResult = await _userManager.AddToRoleAsync(createdUser, parsedRole.ToString());
+
+        if (!assignRoleResult.Succeeded)
+            return BadRequest(assignRoleResult.Errors);
 
         return Ok(new
         {

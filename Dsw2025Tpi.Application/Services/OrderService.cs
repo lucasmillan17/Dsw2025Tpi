@@ -22,7 +22,7 @@ namespace Dsw2025Tpi.Application.Services
             _productService = productService;
         }
 
-        private OrderModelResponse OrderResponseGenerator(Order r)
+        private async Task<OrderModelResponse> OrderResponseGenerator(Order r)
         {
             OrderItemModelResponse[] orderItemsResponse = r.OrderItems.Select(
                 p => new OrderItemModelResponse(
@@ -33,10 +33,13 @@ namespace Dsw2025Tpi.Application.Services
                     )
                 ).ToArray();
 
+            var customerName = await _repository.First<Customer>(c => r.CustomerId == c.Id);
+
             return new OrderModelResponse(
                 r.Id,
                 r.TotalAmount,
                 r.CustomerId,
+                customerName?.Name,
                 r.ShippingAddress,
                 r.BillingAddress,
                 r.Notes,
@@ -100,6 +103,7 @@ namespace Dsw2025Tpi.Application.Services
             return new OrderModelResponse(order.Id,
                 order.TotalAmount,
                 order.CustomerId,
+                customer.Name,
                 order.ShippingAddress,
                 order.BillingAddress,
                 order.Notes,
@@ -112,23 +116,26 @@ namespace Dsw2025Tpi.Application.Services
             var order = await _repository.First<Order>(p => p.Id == id, "OrderItems", "OrderItems.Product")
             ?? throw new NotFoundException("La orden no existe.");
 
-            return OrderResponseGenerator(order);
+            return await OrderResponseGenerator(order);
 
         }
 
         public async Task<IEnumerable<OrderModelResponse>> GetAllOrders()
         {
-            var order = await _repository.GetAll<Order>("OrderItems", "OrderItems.Product")
-            ?? throw new NotFoundException("La orden no existe.");
+            var orders = await _repository.GetAll<Order>("OrderItems", "OrderItems.Product")
+                ?? throw new NotFoundException("La orden no existe.");
 
-            var result = order.Select(o =>
+            var responses = new List<OrderModelResponse>();
+
+            foreach (var o in orders)
             {
-                return OrderResponseGenerator(o);
-            });
+                var response = await OrderResponseGenerator(o); // 🔥 secuencial → sin error
+                responses.Add(response);
+            }
 
-            return result;
-
+            return responses;
         }
+
 
         public async Task<OrderModelResponse> UpdateOrderStatus(Guid id, NewOrderStatusModel r)
         {
@@ -154,7 +161,7 @@ namespace Dsw2025Tpi.Application.Services
             order.ChangeStatus(newStatus);
             await _repository.Update<Order>(order);
 
-            return OrderResponseGenerator(order);
+            return await OrderResponseGenerator(order);
         }
 
     }
