@@ -1,12 +1,15 @@
 ﻿using Azure.Core;
 using Dsw2025Tpi.Application.Dtos;
 using Dsw2025Tpi.Application.Services;
+using Dsw2025Tpi.Data.Repositories;
 using Dsw2025Tpi.Domain.Enums;
+using Dsw2025Tpi.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Dsw2025Tpi.Data.Repositories.Interfaces;
 
 namespace Dsw2025Ej15.Api.Controllers;
 
@@ -17,14 +20,17 @@ public class AuthenticateController : ControllerBase
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly JwtTokenService _jwtTokenService;
+    private readonly IRepository _repository;
 
     public AuthenticateController(UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
-        JwtTokenService jwtTokenService)
+        JwtTokenService jwtTokenService,
+        IRepository repository)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _jwtTokenService = jwtTokenService;
+        _repository = repository;
     }
 
     [HttpPost("login")]
@@ -47,10 +53,14 @@ public class AuthenticateController : ControllerBase
                 error = "Usuario o contraseña incorrectos"
             });
         }
-
+        var roles = await _userManager.GetRolesAsync(user);
+        var userRole = roles.FirstOrDefault();
         var token = await _jwtTokenService.GenerateToken(user);
+        var customer = await _repository.First<Customer>(c => c.EMail == user.Email);
         return Ok(new {
-            token 
+            token,
+            role = userRole,
+            customer?.Id
         });
     }
 
@@ -74,6 +84,12 @@ public class AuthenticateController : ControllerBase
         var createdUser = await _userManager.FindByNameAsync(model.Username);
 
         var assignRoleResult = await _userManager.AddToRoleAsync(createdUser, parsedRole.ToString());
+
+        if(parsedRole == ValidRoles.CLIENT)
+        {
+            var clientCustomer = new Customer(model.Email, model.Nombre, model.PhoneNumber);
+            await _repository.Add<Customer>(clientCustomer);
+        }
 
         if (!assignRoleResult.Succeeded)
             return BadRequest(assignRoleResult.Errors);

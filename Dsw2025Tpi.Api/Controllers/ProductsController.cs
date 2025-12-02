@@ -97,14 +97,16 @@ namespace Dsw2025Tpi.Api.Controllers
 
         public async Task<IActionResult> GetAuthProducts([FromQuery] ProductFilterProduct request)
         {
-            var products = await _productService.GetProducts(request);
-            if (products == null)
+            try
             {
-                Response.Headers.Append("X-Message", "No hay productos que coincidan con el filtro");
-                return NoContent();
-            }
-            return Ok(products);
+                var products = await _productService.GetProducts(request);
+                return Ok(products);
                 
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }
