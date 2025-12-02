@@ -93,7 +93,7 @@ namespace Dsw2025Tpi.Api.Controllers
             }
         }
         [HttpGet("admin")]
-        [Authorize(Roles = "Master, Admin")]
+        [AllowAnonymous]
 
         public async Task<IActionResult> GetAuthProducts([FromQuery] ProductFilterProduct request)
         {
