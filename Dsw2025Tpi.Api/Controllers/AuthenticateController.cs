@@ -47,10 +47,12 @@ public class AuthenticateController : ControllerBase
                 error = "Usuario o contraseña incorrectos"
             });
         }
-
+        var roles = await _userManager.GetRolesAsync(user);
+        var userRole = roles.FirstOrDefault();
         var token = await _jwtTokenService.GenerateToken(user);
         return Ok(new {
-            token 
+            token,
+            role = userRole
         });
     }
 

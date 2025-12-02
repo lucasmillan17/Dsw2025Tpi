@@ -1,0 +1,48 @@
+[33me00818b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelopment[m[33m, [m[1;31morigin/development[m[33m)[m Merge branch 'ing-software-frt-utn:master' into development
+[33m4d7a703[m actualizacion de apis
+[33m70513c7[m adicion de autenticacion
+[33mea7ae0c[m Merge pull request #2 from lucasmillan17/feature/endpointsFaltantes
+[33m5ac48e2[m[33m ([m[1;31morigin/feature/endpointsFaltantes[m[33m)[m Merge branch 'development' into feature/endpointsFaltantes
+[33m77b389d[m Todos los endpoints terminados
+[33m354488d[m Modificaciones casos de prueba
+[33mff8a6e3[m mejora de limpieza de codigo
+[33mfc889be[m Solucionado Get order
+[33m477765a[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m Casos de prueba
+[33m618607a[m fix exceptions
+[33mc02bf91[m version hasta implementacion 6
+[33maf45595[m todo bien
+[33m0718b2b[m finally
+[33m5432860[m Recuperar ProductsController.cs desde commit
+[33mf01c42b[m merge de ordercontroller
+[33mbfa99cf[m Merge branch 'development' of https://github.com/lucasmillan17/Dsw2025Tpi into development
+[33m296639f[m Fix case: controllers → Controllers
+[33m049d606[m fix CreateOrder
+[33m3e427b7[m Se fixeo el problema
+[33m4db3f17[m Renombrar porq tenia un conflicto
+[33mceb613b[m 1ra version orderController y adicion de getOrder en servicio
+[33mdde2031[m Se completo inhabilitar producto
+[33m36a7918[m 1ra version de controlador y endpoints
+[33m1c10e3f[m[33m ([m[1;31morigin/feature/endpointsJuan[m[33m)[m Merge pull request #1 from juanfranh/feature/endpointsJuan
+[33m8dfaee8[m Merge branch 'feature/endpointsJuan' into feature/endpointsJuan
+[33m574f253[m 3rd version of migration and aproximation to products controllers
+[33mc4295c5[m directory change of IRepository
+[33m8dc27f9[m 1st version of OrderService
+[33m0ae4347[m ProductService 1st version and OrderService generated
+[33mc652cc0[m 2da version de dominio, dtos, y migracion a modelo relacional
+[33m984dba5[m Merge branch 'master' of https://github.com/ing-software-frt-utn/Dsw2025Tpi
+[33mfea403d[m Se define set a la propiedad Id
+[33m4506147[m Agregar funcionalidad de actualizar (no implementada)
+[33mc13889b[m Agregado funcion de Obtener todos los productos (a revisar)
+[33mab54c5d[m Se agrega funcionalidad de Crear Producto (A revisar)
+[33m55faf64[m adicion de cadena conexion
+[33m3708853[m DbContext 2nd definition
+[33m1d1e060[m Merge branch 'feature/dtos' into development merge of the dtos to branch development
+[33mcf6d0c1[m save changes db context before merge
+[33m936c2bf[m Corrected dtos
+[33ma658ff7[m DbContext 1st definition
+[33m42a9cf0[m 1st dtos definition
+[33maf07f8e[m 1ra version domain
+[33m12091d2[m Update README.md
+[33m36d586d[m Se actualiza README
+[33m304229a[m Add project files.
+[33m3b23b78[m Add .gitattributes, .gitignore, and README.md.
